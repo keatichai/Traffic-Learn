@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Create ListView
-        int[] ints = new int[20];
+        final int[] ints = new int[20];
         ints[0] = R.drawable.traffic_01;
         ints[1] = R.drawable.traffic_02;
         ints[2] = R.drawable.traffic_03;
@@ -64,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
         ints[18] = R.drawable.traffic_19;
         ints[19] = R.drawable.traffic_20;
 
-        String[] titleStrings = getResources().getStringArray(R.array.title);
-        String[] detailStrings = getResources().getStringArray(R.array.detail);
+        final String[] titleStrings = getResources().getStringArray(R.array.title);
+        final String[] detailStrings = getResources().getStringArray(R.array.detail);
         String[] detailShortStrings = new String[detailStrings.length];
         for (int i=0;i<detailStrings.length;i+=1){
             detailShortStrings[i] = detailStrings[i].substring(0, 30) + "...";
@@ -74,6 +75,18 @@ public class MainActivity extends AppCompatActivity {
         TrafficAdapter trafficAdapter = new TrafficAdapter(this,titleStrings,detailShortStrings,ints);
         listView.setAdapter(trafficAdapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this,DetailActivity.class);
+                intent.putExtra("Title", titleStrings[position]);
+                intent.putExtra("Detail",detailStrings[position]);
+                intent.putExtra("Image",ints[position]);
+                startActivity(intent);
+
+
+            }
+        });
 
 
     }// Main Method
